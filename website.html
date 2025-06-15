@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaHub - Film Industry Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hours {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .phone-number {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .sign-in-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .sign-in-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 60px 0;
+        }
+
+        .featured-section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .movie-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .side-card {
+            width: 280px;
+            height: 350px;
+        }
+
+        .main-card {
+            width: 600px;
+            height: 400px;
+            z-index: 2;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 30px;
+            color: white;
+        }
+
+        .movie-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .movie-info {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .movie-card:hover .play-button {
+            opacity: 1;
+        }
+
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Navigation arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-arrow.left {
+            left: 20px;
+        }
+
+        .nav-arrow.right {
+            right: 20px;
+        }
+
+        /* Decorative elements */
+        .star {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .star:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .star:nth-child(3) {
+            bottom: 30%;
+            left: 8%;
+            animation-delay: 2s;
+        }
+
+        .star:nth-child(4) {
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        /* Section content */
+        .section {
+            display: none;
+            padding: 40px 0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffd93d;
+        }
+
+        .card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .featured-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .side-card, .main-card {
+                width: 100%;
+                max-width: 350px;
+                height: 300px;
+            }
+            
+            .nav-arrow {
+                display: none;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="star">✨</div>
+    <div class="star">⭐</div>
+    <div class="star">✨</div>
+    <div class="star">⭐</div>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="contact-info">
+                    <span>📧 contact@cinemahub.com</span>
+                </div>
+                <div class="hours">
+                    <span>🕙 Mon-Fri: 10:00am - 09:00pm</span>
+                </div>
+            </div>
+            
+            <nav class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">🎬</div>
+                    <span>CinemaHub</span>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active" data-section="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profiles" class="nav-link" data-section="profiles">Profiles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#ott" class="nav-link" data-section="ott">OTT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#posts" class="nav-link" data-section="posts">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#learning" class="nav-link" data-section="learning">Movie Making Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#festival" class="nav-link" data-section="festival">Short Film Festival</a>
+                    </li>
+                </ul>
+                
+                <div class="auth-section">
+                    <div>
+                        <div style="font-size: 12px; opacity: 0.8;">Have Any Questions?</div>
+                        <div class="phone-number">+91 567 890 68</div>
+                    </div>
+                    <a href="#" class="sign-in-btn">Sign In →</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <div class="featured-section">
+                    <button class="nav-arrow left">❮</button>
+                    
+                    <div class="movie-card side-card">
+                        <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=600&fit=crop" alt="Action Movie" class="movie-poster">
+                        <div class="movie-overlay">
+                            <div class="movie-title">RAID</div>
+                            <div class="movie-info">
+                                <span>Action</span>
+                                <span>2024</span>
+                                <span>2h 15m</span>
+                            </div>
+                        </div>
+                        <div class="play-button">▶</div>
+                    </div>
+                    
+                    <div class="movie-card main-card">
+                        <img src="https://images.unsplash.com/photo-1489599735734-79b4212f2371?w=800&h=600&fit=crop" alt="Featured Movie" class="movie-poster">
+                        <div class="movie-overlay">
+                            <div class="movie-title">SSMB29</div>
+                            <div class="movie-info">
+                                <span>BLOCKBUSTER 2024</span>
+                                <span>Adventure</span>
+                                <span>Drama</span>
+                            </div>
+                        </div>
+                        <div class="play-button">▶</div>
+                    </div>
+                    
+                    <div class="movie-card side-card">
+                        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop" alt="Cleopatra" class="movie-poster">
+                        <div class="movie-overlay">
+                            <div class="movie-title">Cleopatra</div>
+                            <div class="movie-info">
+                                <span>TRAILER</span>
+                                <span>Historical</span>
+                                <span>Drama</span>
+                            </div>
+                        </div>
+                        <div class="play-button">▶</div>
+                    </div>
+                    
+                    <button class="nav-arrow right">❯</button>
+                </div>
+            </section>
+
+            <!-- Profiles Section -->
+            <section id="profiles" class="section">
+                <h2>Artist Profiles</h2>
+                <div class="section-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>🎭 Directors</h3>
+                            <p>Discover talented directors from around the world. Browse their portfolios, filmography, and connect with visionary storytellers who bring scripts to life.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎬 Actors</h3>
+                            <p>Meet versatile actors and performers. View their demo reels, headshots, and previous work to find the perfect talent for your next project.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎵 Music Directors</h3>
+                            <p>Connect with composers and music directors who create memorable soundtracks. Listen to their work and collaborate on your film's audio experience.</p>
+                        </div>
+                        <div class="card">
+                            <h3>📸 Cinematographers</h3>
+                            <p>Find skilled cinematographers who capture stunning visuals. Explore their work and discover the artists behind breathtaking film photography.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OTT Section -->
+            <section id="ott" class="section">
+                <h2>OTT Platforms</h2>
+                <div class="section-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>🎯 Streaming Partners</h3>
+                            <p>Connect with leading OTT platforms for content distribution. Get your films and series on popular streaming services worldwide.</p>
+                        </div>
+                        <div class="card">
+                            <h3>📊 Analytics Dashboard</h3>
+                            <p>Track viewership, engagement metrics, and revenue from various OTT platforms. Make data-driven decisions for your content strategy.</p>
+                        </div>
+                        <div class="card">
+                            <h3>💰 Monetization Tools</h3>
+                            <p>Explore different revenue models including subscriptions, pay-per-view, and advertising-based monetization options.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Posts Section -->
+            <section id="posts" class="section">
+                <h2>Industry News & Posts</h2>
+                <div class="section-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>📰 Latest News</h3>
+                            <p>Stay updated with the latest happenings in the film industry. From box office reports to industry trends and technological advances.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎪 Festival Updates</h3>
+                            <p>Get information about upcoming film festivals, submission deadlines, and networking opportunities worldwide.</p>
+                        </div>
+                        <div class="card">
+                            <h3>💼 Industry Jobs</h3>
+                            <p>Find job opportunities in the film industry. From production roles to post-production and distribution positions.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🤝 Collaboration Hub</h3>
+                            <p>Connect with fellow filmmakers, share project ideas, and find collaborators for your next creative venture.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Movie Making Learning Section -->
+            <section id="learning" class="section">
+                <h2>Movie Making Learning</h2>
+                <div class="section-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>🎓 Online Courses</h3>
+                            <p>Comprehensive courses covering all aspects of filmmaking from pre-production to post-production. Learn from industry experts.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🛠️ Technical Skills</h3>
+                            <p>Master the technical aspects of filmmaking including camera operation, lighting, sound recording, and editing software.</p>
+                        </div>
+                        <div class="card">
+                            <h3>✍️ Screenwriting</h3>
+                            <p>Learn the art of storytelling and screenplay writing. Develop compelling characters and engaging narratives.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎬 Production Management</h3>
+                            <p>Understand the business side of filmmaking including budgeting, scheduling, and managing film productions effectively.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Short Film Festival Section -->
+            <section id="festival" class="section">
+                <h2>Short Film Festival</h2>
+                <div class="section-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>🏆 Submit Your Film</h3>
+                            <p>Submit your short films to our prestigious festival. Showcase your talent to industry professionals and film enthusiasts.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎪 Festival Events</h3>
+                            <p>Attend screenings, workshops, and networking events. Connect with fellow filmmakers and industry professionals.</p>
+                        </div>
+                        <div class="card">
+                            <h3>👥 Jury & Judges</h3>
+                            <p>Meet our esteemed panel of judges including renowned directors, producers, and film critics from around the world.</p>
+                        </div>
+                        <div class="card">
+                            <h3>🎁 Prizes & Recognition</h3>
+                            <p>Win cash prizes, equipment, and distribution opportunities. Get your work recognized and promoted to wider audiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+        }
+
+        // Add click handlers for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+
+        // Simple carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.movie-card');
+        
+        document.querySelector('.nav-arrow.left').addEventListener('click', () => {
+            slides.forEach(slide => {
+                slide.style.transform = 'translateX(100px)';
+                setTimeout(() => {
+                    slide.style.transform = 'translateX(0)';
+                }, 300);
+            });
+        });
+        
+        document.querySelector('.nav-arrow.right').addEventListener('click', () => {
+            slides.forEach(slide => {
+                slide.style.transform = 'translateX(-100px)';
+                setTimeout(() => {
+                    slide.style.transform = 'translateX(0)';
+                }, 300);
+            });
+        });
+
+        // Add click handlers for movie cards
+        document.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('.movie-title').textContent;
+                alert(`Playing trailer for: ${title}`);
+            });
+        });
+    </script>
+</body>
+</html>
